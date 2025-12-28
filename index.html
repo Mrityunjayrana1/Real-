@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy New Year 2026 - Holographic</title>
+    <title>Happy New Year 2026 - Holographic Om</title>
     <style>
         /* --- CSS STYLES --- */
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Rozha+One&family=Great+Vibes&display=swap');
@@ -18,7 +18,6 @@
             font-family: 'Cinzel', serif;
         }
 
-        /* Container setup */
         #container {
             position: relative;
             width: 100%;
@@ -28,10 +27,9 @@
             align-items: center;
             flex-direction: column;
             z-index: 10;
-            pointer-events: none; /* Allows clicking through to canvas if needed */
+            pointer-events: none;
         }
 
-        /* Canvas for Fireworks */
         canvas {
             position: absolute;
             top: 0;
@@ -41,7 +39,6 @@
             z-index: 1;
         }
 
-        /* Flash Effect */
         #flash-overlay {
             position: absolute;
             top: 0;
@@ -70,83 +67,80 @@
             z-index: 30;
         }
 
-        /* Scene 2: Main Greeting */
+        /* Scene 2: Main Content */
         .main-content {
             display: none; 
             text-align: center;
             z-index: 15;
             position: relative;
             width: 100%;
-            perspective: 1000px; /* Essential for 3D effect */
+            perspective: 1000px; 
         }
 
-        /* --- HOLOGRAPHIC OM STYLES --- */
+        /* --- HOLOGRAPHIC SVG OM STYLES --- */
         .holo-wrapper {
             position: relative;
-            width: 200px;
-            height: 250px;
+            width: 220px;
+            height: 250px; /* Space for hologram */
             margin: 0 auto 10px auto;
             transform-style: preserve-3d;
         }
 
-        /* The spinning 3D container */
         .holo-spinner {
             position: relative;
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
-            animation: holoSpin 10s linear infinite;
+            animation: holoSpin 12s linear infinite;
         }
 
-        /* The text layers to create depth */
-        .om-layer {
+        /* The SVG Layer Styling */
+        .om-svg {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 150px;
-            color: rgba(255, 215, 0, 0.1); /* Transparent Gold */
-            -webkit-text-stroke: 2px #FFD700;
-            text-shadow: 0 0 20px #ff4500, 0 0 40px #ff0000;
-            pointer-events: none;
-            user-select: none;
+            width: 160px;  /* Size of Om */
+            height: 160px;
+            fill: rgba(255, 215, 0, 0.15); /* Glassy Gold fill */
+            stroke: #FFD700; /* Gold Border */
+            stroke-width: 5px;
+            filter: drop-shadow(0 0 15px rgba(255, 69, 0, 0.8)); /* Neon Glow */
+            overflow: visible;
         }
 
-        /* Layer offsets for 3D thickness */
-        .om-layer:nth-child(1) { transform: translate(-50%, -50%) translateZ(0px); opacity: 1; color: #fff; -webkit-text-stroke: 0;}
-        .om-layer:nth-child(2) { transform: translate(-50%, -50%) translateZ(5px); }
-        .om-layer:nth-child(3) { transform: translate(-50%, -50%) translateZ(10px); }
-        .om-layer:nth-child(4) { transform: translate(-50%, -50%) translateZ(-5px); }
-        .om-layer:nth-child(5) { transform: translate(-50%, -50%) translateZ(-10px); }
+        /* Stacking SVG Layers for 3D depth */
+        .om-svg:nth-child(1) { transform: translate(-50%, -50%) translateZ(0px); opacity: 0.9; stroke: #fff; stroke-width: 2px;}
+        .om-svg:nth-child(2) { transform: translate(-50%, -50%) translateZ(6px); }
+        .om-svg:nth-child(3) { transform: translate(-50%, -50%) translateZ(12px); }
+        .om-svg:nth-child(4) { transform: translate(-50%, -50%) translateZ(-6px); }
+        .om-svg:nth-child(5) { transform: translate(-50%, -50%) translateZ(-12px); }
 
-        /* The Projector Base Light */
+        /* Base & Rings */
         .holo-base {
             position: absolute;
-            bottom: -20px;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%) rotateX(70deg);
-            width: 150px;
-            height: 150px;
+            width: 140px;
+            height: 140px;
             background: radial-gradient(circle, rgba(255,215,0,0.8) 0%, rgba(255,69,0,0) 60%);
-            box-shadow: 0 0 50px #ff4500;
+            box-shadow: 0 0 40px #ff4500;
             border-radius: 50%;
             animation: basePulse 2s infinite alternate;
         }
 
-        /* Conical Beam Effect */
         .holo-beam {
             position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 160px;
-            height: 100px;
-            background: linear-gradient(to top, rgba(255, 140, 0, 0.3), transparent);
+            width: 180px;
+            height: 120px;
+            background: linear-gradient(to top, rgba(255, 140, 0, 0.2), transparent);
             clip-path: polygon(20% 100%, 80% 100%, 100% 0, 0 0);
             pointer-events: none;
         }
 
-        /* 3D Rings */
         .ring {
             position: absolute;
             top: 50%;
@@ -154,9 +148,10 @@
             border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 50%;
             transform-style: preserve-3d;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
         }
-        .ring-1 { width: 220px; height: 220px; transform: translate(-50%, -50%) rotateX(70deg); animation: ringSpin 5s linear infinite; }
-        .ring-2 { width: 180px; height: 180px; border-color: rgba(255, 69, 0, 0.4); transform: translate(-50%, -50%) rotateY(60deg); animation: ringSpinReverse 7s linear infinite; }
+        .ring-1 { width: 200px; height: 200px; transform: translate(-50%, -50%) rotateX(70deg); animation: ringSpin 6s linear infinite; }
+        .ring-2 { width: 170px; height: 170px; border-color: rgba(255, 69, 0, 0.5); transform: translate(-50%, -50%) rotateY(60deg); animation: ringSpinReverse 8s linear infinite; }
 
         .hindi-text {
             font-family: 'Rozha One', serif;
@@ -178,32 +173,12 @@
             text-shadow: 0 0 10px #ff00de;
         }
 
-        /* Animations */
-        @keyframes holoSpin {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-        @keyframes ringSpin {
-            0% { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); }
-            100% { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
-        }
-        @keyframes ringSpinReverse {
-            0% { transform: translate(-50%, -50%) rotateX(20deg) rotateY(20deg) rotateZ(360deg); }
-            100% { transform: translate(-50%, -50%) rotateX(20deg) rotateY(20deg) rotateZ(0deg); }
-        }
-        @keyframes basePulse {
-            0% { opacity: 0.5; transform: translateX(-50%) rotateX(70deg) scale(0.9); }
-            100% { opacity: 1; transform: translateX(-50%) rotateX(70deg) scale(1.1); }
-        }
-        @keyframes textPulse {
-            0% { transform: scale(1); filter: drop-shadow(0 0 10px gold); }
-            100% { transform: scale(1.05); filter: drop-shadow(0 0 25px orangered); }
-        }
-        @keyframes flashAnim {
-            0% { opacity: 0; }
-            30% { opacity: 1; }
-            100% { opacity: 0; }
-        }
+        @keyframes holoSpin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+        @keyframes ringSpin { 0% { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); } 100% { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); } }
+        @keyframes ringSpinReverse { 0% { transform: translate(-50%, -50%) rotateX(20deg) rotateY(20deg) rotateZ(360deg); } 100% { transform: translate(-50%, -50%) rotateX(20deg) rotateY(20deg) rotateZ(0deg); } }
+        @keyframes basePulse { 0% { opacity: 0.5; transform: translateX(-50%) rotateX(70deg) scale(0.9); } 100% { opacity: 1; transform: translateX(-50%) rotateX(70deg) scale(1.1); } }
+        @keyframes textPulse { 0% { transform: scale(1); filter: drop-shadow(0 0 10px gold); } 100% { transform: scale(1.05); filter: drop-shadow(0 0 25px orangered); } }
+        @keyframes flashAnim { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
 
         @media (max-width: 768px) {
             .intro-text { font-size: 2.2rem; }
@@ -234,14 +209,28 @@
                 <div class="ring ring-2"></div>
 
                 <div class="holo-spinner">
-                    <div class="om-layer">🕉️</div>
-                    <div class="om-layer">🕉️</div>
-                    <div class="om-layer">🕉️</div>
-                    <div class="om-layer">🕉️</div>
-                    <div class="om-layer">🕉️</div>
+                    <svg class="om-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M260.6 156.9c13.4-30.8 7.6-58.4-15.8-76.3-21.5-16.5-56-12.1-73.6 8.7-18.7 22.1-13.4 55.4 12.1 79.5 7.6 7.2 16.5 13.9 26.9 19.3-5.2 2.2-10.3 3.6-15.7 4.5-54.8 9-85.9-21.1-94.4-44.5-2.2-6.3-8.5-9.9-14.8-8.5-6.3 1.3-9.9 7.6-8.5 13.9 11.2 30.6 51.6 70.1 123.6 58.4 0 0 0 .5.5 .5 .9 .5 1.3 .5 2.2 .9 2.7 1.3 5.8 3.6 8.5 6.3 9.4 9.4 9.4 24.7 0 34.1-9.4 9.4-24.7 9.4-34.1 0-8.1-8.1-9-20.2-2.7-29.2-2.7-4-1.3-9-4.5-11.2-3.1-2.2-7.6-2.2-10.8 .9-4.9 4.9-5.4 13-1.3 18.4 22 28.7 64.2 26 84.8 5.4 30.6-30.6 30.6-80.4 0-111zm-48.5-49.4c11.7-13.9 31.9-15.7 44.5-5.8 13.9 10.8 17.1 27.4 9 46.2-9.4 22-44.5 48.1-73.6 34.6 13.4-31.9 13.5-66.5 20.1-75zm205.2-1.3c-6.3 1.3-9.9 7.6-8.5 13.9 13 58.8-19.3 105.9-58.8 126.1-4 .9-8.1 1.8-12.1 1.8-14.8 0-29.2-8.1-37.3-22-12.6-21.5-5.4-49.4 16.2-62 5.4-3.1 7.2-10.3 4-15.7-3.1-5.4-10.3-7.2-15.7-4-32.3 18.9-43.1 60.6-24.2 92.9 12.1 20.7 34.1 32.8 56.6 32.8 6.3 0 12.1-1.3 18-2.7 51.6-26.5 93.4-86.2 76.3-152.7-2.3-6.3-8.5-9.8-14.5-8.4zm-64.2-72.7c-17.5 7.6-25.6 27.8-18 45.4 7.6 17.5 27.8 25.6 45.4 18 17.5-7.6 25.6-27.8 18-45.4-7.7-17.5-27.9-25.6-45.4-18z"/>
+                    </svg>
+
+                    <svg class="om-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M260.6 156.9c13.4-30.8 7.6-58.4-15.8-76.3-21.5-16.5-56-12.1-73.6 8.7-18.7 22.1-13.4 55.4 12.1 79.5 7.6 7.2 16.5 13.9 26.9 19.3-5.2 2.2-10.3 3.6-15.7 4.5-54.8 9-85.9-21.1-94.4-44.5-2.2-6.3-8.5-9.9-14.8-8.5-6.3 1.3-9.9 7.6-8.5 13.9 11.2 30.6 51.6 70.1 123.6 58.4 0 0 0 .5.5 .5 .9 .5 1.3 .5 2.2 .9 2.7 1.3 5.8 3.6 8.5 6.3 9.4 9.4 9.4 24.7 0 34.1-9.4 9.4-24.7 9.4-34.1 0-8.1-8.1-9-20.2-2.7-29.2-2.7-4-1.3-9-4.5-11.2-3.1-2.2-7.6-2.2-10.8 .9-4.9 4.9-5.4 13-1.3 18.4 22 28.7 64.2 26 84.8 5.4 30.6-30.6 30.6-80.4 0-111zm-48.5-49.4c11.7-13.9 31.9-15.7 44.5-5.8 13.9 10.8 17.1 27.4 9 46.2-9.4 22-44.5 48.1-73.6 34.6 13.4-31.9 13.5-66.5 20.1-75zm205.2-1.3c-6.3 1.3-9.9 7.6-8.5 13.9 13 58.8-19.3 105.9-58.8 126.1-4 .9-8.1 1.8-12.1 1.8-14.8 0-29.2-8.1-37.3-22-12.6-21.5-5.4-49.4 16.2-62 5.4-3.1 7.2-10.3 4-15.7-3.1-5.4-10.3-7.2-15.7-4-32.3 18.9-43.1 60.6-24.2 92.9 12.1 20.7 34.1 32.8 56.6 32.8 6.3 0 12.1-1.3 18-2.7 51.6-26.5 93.4-86.2 76.3-152.7-2.3-6.3-8.5-9.8-14.5-8.4zm-64.2-72.7c-17.5 7.6-25.6 27.8-18 45.4 7.6 17.5 27.8 25.6 45.4 18 17.5-7.6 25.6-27.8 18-45.4-7.7-17.5-27.9-25.6-45.4-18z"/>
+                    </svg>
+
+                    <svg class="om-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M260.6 156.9c13.4-30.8 7.6-58.4-15.8-76.3-21.5-16.5-56-12.1-73.6 8.7-18.7 22.1-13.4 55.4 12.1 79.5 7.6 7.2 16.5 13.9 26.9 19.3-5.2 2.2-10.3 3.6-15.7 4.5-54.8 9-85.9-21.1-94.4-44.5-2.2-6.3-8.5-9.9-14.8-8.5-6.3 1.3-9.9 7.6-8.5 13.9 11.2 30.6 51.6 70.1 123.6 58.4 0 0 0 .5.5 .5 .9 .5 1.3 .5 2.2 .9 2.7 1.3 5.8 3.6 8.5 6.3 9.4 9.4 9.4 24.7 0 34.1-9.4 9.4-24.7 9.4-34.1 0-8.1-8.1-9-20.2-2.7-29.2-2.7-4-1.3-9-4.5-11.2-3.1-2.2-7.6-2.2-10.8 .9-4.9 4.9-5.4 13-1.3 18.4 22 28.7 64.2 26 84.8 5.4 30.6-30.6 30.6-80.4 0-111zm-48.5-49.4c11.7-13.9 31.9-15.7 44.5-5.8 13.9 10.8 17.1 27.4 9 46.2-9.4 22-44.5 48.1-73.6 34.6 13.4-31.9 13.5-66.5 20.1-75zm205.2-1.3c-6.3 1.3-9.9 7.6-8.5 13.9 13 58.8-19.3 105.9-58.8 126.1-4 .9-8.1 1.8-12.1 1.8-14.8 0-29.2-8.1-37.3-22-12.6-21.5-5.4-49.4 16.2-62 5.4-3.1 7.2-10.3 4-15.7-3.1-5.4-10.3-7.2-15.7-4-32.3 18.9-43.1 60.6-24.2 92.9 12.1 20.7 34.1 32.8 56.6 32.8 6.3 0 12.1-1.3 18-2.7 51.6-26.5 93.4-86.2 76.3-152.7-2.3-6.3-8.5-9.8-14.5-8.4zm-64.2-72.7c-17.5 7.6-25.6 27.8-18 45.4 7.6 17.5 27.8 25.6 45.4 18 17.5-7.6 25.6-27.8 18-45.4-7.7-17.5-27.9-25.6-45.4-18z"/>
+                    </svg>
+
+                    <svg class="om-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M260.6 156.9c13.4-30.8 7.6-58.4-15.8-76.3-21.5-16.5-56-12.1-73.6 8.7-18.7 22.1-13.4 55.4 12.1 79.5 7.6 7.2 16.5 13.9 26.9 19.3-5.2 2.2-10.3 3.6-15.7 4.5-54.8 9-85.9-21.1-94.4-44.5-2.2-6.3-8.5-9.9-14.8-8.5-6.3 1.3-9.9 7.6-8.5 13.9 11.2 30.6 51.6 70.1 123.6 58.4 0 0 0 .5.5 .5 .9 .5 1.3 .5 2.2 .9 2.7 1.3 5.8 3.6 8.5 6.3 9.4 9.4 9.4 24.7 0 34.1-9.4 9.4-24.7 9.4-34.1 0-8.1-8.1-9-20.2-2.7-29.2-2.7-4-1.3-9-4.5-11.2-3.1-2.2-7.6-2.2-10.8 .9-4.9 4.9-5.4 13-1.3 18.4 22 28.7 64.2 26 84.8 5.4 30.6-30.6 30.6-80.4 0-111zm-48.5-49.4c11.7-13.9 31.9-15.7 44.5-5.8 13.9 10.8 17.1 27.4 9 46.2-9.4 22-44.5 48.1-73.6 34.6 13.4-31.9 13.5-66.5 20.1-75zm205.2-1.3c-6.3 1.3-9.9 7.6-8.5 13.9 13 58.8-19.3 105.9-58.8 126.1-4 .9-8.1 1.8-12.1 1.8-14.8 0-29.2-8.1-37.3-22-12.6-21.5-5.4-49.4 16.2-62 5.4-3.1 7.2-10.3 4-15.7-3.1-5.4-10.3-7.2-15.7-4-32.3 18.9-43.1 60.6-24.2 92.9 12.1 20.7 34.1 32.8 56.6 32.8 6.3 0 12.1-1.3 18-2.7 51.6-26.5 93.4-86.2 76.3-152.7-2.3-6.3-8.5-9.8-14.5-8.4zm-64.2-72.7c-17.5 7.6-25.6 27.8-18 45.4 7.6 17.5 27.8 25.6 45.4 18 17.5-7.6 25.6-27.8 18-45.4-7.7-17.5-27.9-25.6-45.4-18z"/>
+                    </svg>
+
+                    <svg class="om-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M260.6 156.9c13.4-30.8 7.6-58.4-15.8-76.3-21.5-16.5-56-12.1-73.6 8.7-18.7 22.1-13.4 55.4 12.1 79.5 7.6 7.2 16.5 13.9 26.9 19.3-5.2 2.2-10.3 3.6-15.7 4.5-54.8 9-85.9-21.1-94.4-44.5-2.2-6.3-8.5-9.9-14.8-8.5-6.3 1.3-9.9 7.6-8.5 13.9 11.2 30.6 51.6 70.1 123.6 58.4 0 0 0 .5.5 .5 .9 .5 1.3 .5 2.2 .9 2.7 1.3 5.8 3.6 8.5 6.3 9.4 9.4 9.4 24.7 0 34.1-9.4 9.4-24.7 9.4-34.1 0-8.1-8.1-9-20.2-2.7-29.2-2.7-4-1.3-9-4.5-11.2-3.1-2.2-7.6-2.2-10.8 .9-4.9 4.9-5.4 13-1.3 18.4 22 28.7 64.2 26 84.8 5.4 30.6-30.6 30.6-80.4 0-111zm-48.5-49.4c11.7-13.9 31.9-15.7 44.5-5.8 13.9 10.8 17.1 27.4 9 46.2-9.4 22-44.5 48.1-73.6 34.6 13.4-31.9 13.5-66.5 20.1-75zm205.2-1.3c-6.3 1.3-9.9 7.6-8.5 13.9 13 58.8-19.3 105.9-58.8 126.1-4 .9-8.1 1.8-12.1 1.8-14.8 0-29.2-8.1-37.3-22-12.6-21.5-5.4-49.4 16.2-62 5.4-3.1 7.2-10.3 4-15.7-3.1-5.4-10.3-7.2-15.7-4-32.3 18.9-43.1 60.6-24.2 92.9 12.1 20.7 34.1 32.8 56.6 32.8 6.3 0 12.1-1.3 18-2.7 51.6-26.5 93.4-86.2 76.3-152.7-2.3-6.3-8.5-9.8-14.5-8.4zm-64.2-72.7c-17.5 7.6-25.6 27.8-18 45.4 7.6 17.5 27.8 25.6 45.4 18 17.5-7.6 25.6-27.8 18-45.4-7.7-17.5-27.9-25.6-45.4-18z"/>
+                    </svg>
+
                 </div>
             </div>
-
             <h1 class="hindi-text">नव वर्ष की <br> हार्दिक शुभकामनाएं..!!</h1>
             <div class="sub-text">Jai Shri Ram | Hare Krishna</div>
         </div>
@@ -254,160 +243,39 @@
             const flash = document.getElementById('flash-overlay');
             const mainContent = document.getElementById('mainContent');
             
-            // 1. Show Date
             setTimeout(() => {
-                introText.style.opacity = '1';
-                introText.style.transform = 'scale(1)';
+                introText.style.opacity = '1'; introText.style.transform = 'scale(1)';
             }, 500);
 
-            // 2. Flash & Switch
             setTimeout(() => {
                 flash.style.animation = "flashAnim 1.5s ease-out"; 
-                
                 setTimeout(() => {
                     introText.style.display = 'none'; 
                     mainContent.style.display = 'block'; 
-                    
-                    autoFireworks = true; 
-                    loop(); 
+                    autoFireworks = true; loop(); 
                 }, 500);
-
             }, 3500); 
         };
 
-        // --- REALISTIC FIREWORKS ENGINE (Same as before) ---
-        window.requestAnimFrame = (function(){
-            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback){ window.setTimeout(callback, 1000 / 60); };
-        })();
-
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let cw = window.innerWidth;
-        let ch = window.innerHeight;
-        let fireworks = [];
-        let particles = [];
-        let hue = 120;
-        let timerTotal = 20; 
-        let timerTick = 0;
-        let autoFireworks = false;
-
-        canvas.width = cw;
-        canvas.height = ch;
-
+        // --- REALISTIC FIREWORKS ENGINE (Physics Based) ---
+        window.requestAnimFrame = (function(){ return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback){ window.setTimeout(callback, 1000 / 60); }; })();
+        const canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+        let cw = window.innerWidth, ch = window.innerHeight, fireworks = [], particles = [], hue = 120, timerTotal = 20, timerTick = 0, autoFireworks = false;
+        canvas.width = cw; canvas.height = ch;
         function random(min, max) { return Math.random() * (max - min) + min; }
-
-        function calculateDistance(p1x, p1y, p2x, p2y) {
-            let xDistance = p1x - p2x;
-            let yDistance = p1y - p2y;
-            return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-        }
-
-        // Firework Class
-        function Firework(sx, sy, tx, ty) {
-            this.x = sx; this.y = sy; this.sx = sx; this.sy = sy;
-            this.tx = tx; this.ty = ty;
-            this.distanceToTarget = calculateDistance(sx, sy, tx, ty);
-            this.distanceTraveled = 0;
-            this.coordinates = [];
-            this.coordinateCount = 3;
-            while(this.coordinateCount--) { this.coordinates.push([this.x, this.y]); }
-            this.angle = Math.atan2(ty - sy, tx - sx);
-            this.speed = 2;
-            this.acceleration = 1.05;
-            this.brightness = random(50, 70);
-            this.targetRadius = 1;
-        }
-
-        Firework.prototype.update = function(index) {
-            this.coordinates.pop();
-            this.coordinates.unshift([this.x, this.y]);
-            if(this.targetRadius < 8) { this.targetRadius += 0.3; } else { this.targetRadius = 1; }
-            this.speed *= this.acceleration;
-            let vx = Math.cos(this.angle) * this.speed;
-            let vy = Math.sin(this.angle) * this.speed;
-            this.distanceTraveled = calculateDistance(this.sx, this.sy, this.x + vx, this.y + vy);
-            if(this.distanceTraveled >= this.distanceToTarget) {
-                createParticles(this.tx, this.ty);
-                fireworks.splice(index, 1);
-            } else {
-                this.x += vx; this.y += vy;
-            }
-        }
-
-        Firework.prototype.draw = function() {
-            ctx.beginPath();
-            ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
-            ctx.lineTo(this.x, this.y);
-            ctx.strokeStyle = 'hsl(' + hue + ', 100%, ' + this.brightness + '%)';
-            ctx.stroke();
-        }
-
-        // Particle Class
-        function Particle(x, y) {
-            this.x = x; this.y = y;
-            this.coordinates = [];
-            this.coordinateCount = 5;
-            while(this.coordinateCount--) { this.coordinates.push([this.x, this.y]); }
-            this.angle = random(0, Math.PI * 2);
-            this.speed = random(1, 10);
-            this.friction = 0.95;
-            this.gravity = 1;
-            this.hue = random(hue - 50, hue + 50);
-            this.brightness = random(50, 80);
-            this.alpha = 1;
-            this.decay = random(0.015, 0.03);
-        }
-
-        Particle.prototype.update = function(index) {
-            this.coordinates.pop();
-            this.coordinates.unshift([this.x, this.y]);
-            this.speed *= this.friction;
-            this.x += Math.cos(this.angle) * this.speed;
-            this.y += Math.sin(this.angle) * this.speed + this.gravity;
-            this.alpha -= this.decay;
-            if(this.alpha <= this.decay) { particles.splice(index, 1); }
-        }
-
-        Particle.prototype.draw = function() {
-            ctx.beginPath();
-            ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
-            ctx.lineTo(this.x, this.y);
-            ctx.strokeStyle = 'hsla(' + this.hue + ', 100%, ' + this.brightness + '%, ' + this.alpha + ')';
-            ctx.stroke();
-        }
-
-        function createParticles(x, y) {
-            let particleCount = 100; // Big explosion
-            while(particleCount--) { particles.push(new Particle(x, y)); }
-        }
-
-        function loop() {
-            if(!autoFireworks) { requestAnimFrame(loop); return; }
-            requestAnimFrame(loop);
-            hue += 0.5;
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-            ctx.fillRect(0, 0, cw, ch);
-            ctx.globalCompositeOperation = 'lighter';
-            
-            let i = fireworks.length;
-            while(i--) { fireworks[i].draw(); fireworks[i].update(i); }
-            
-            let k = particles.length;
-            while(k--) { particles[k].draw(); particles[k].update(k); }
-            
-            if(timerTick >= timerTotal) {
-                let startX = cw / 2 + random(-200, 200); 
-                fireworks.push(new Firework(startX, ch, random(0, cw), random(0, ch/2)));
-                timerTick = 0;
-            } else { timerTick++; }
-        }
+        function calculateDistance(p1x, p1y, p2x, p2y) { return Math.sqrt(Math.pow(p1x - p2x, 2) + Math.pow(p1y - p2y, 2)); }
         
-        window.addEventListener('resize', function() {
-            cw = window.innerWidth; ch = window.innerHeight;
-            canvas.width = cw; canvas.height = ch;
-        });
-
+        function Firework(sx, sy, tx, ty) { this.x = sx; this.y = sy; this.sx = sx; this.sy = sy; this.tx = tx; this.ty = ty; this.distanceToTarget = calculateDistance(sx, sy, tx, ty); this.distanceTraveled = 0; this.coordinates = []; this.coordinateCount = 3; while(this.coordinateCount--) { this.coordinates.push([this.x, this.y]); } this.angle = Math.atan2(ty - sy, tx - sx); this.speed = 2; this.acceleration = 1.05; this.brightness = random(50, 70); this.targetRadius = 1; }
+        Firework.prototype.update = function(index) { this.coordinates.pop(); this.coordinates.unshift([this.x, this.y]); if(this.targetRadius < 8) { this.targetRadius += 0.3; } else { this.targetRadius = 1; } this.speed *= this.acceleration; let vx = Math.cos(this.angle) * this.speed, vy = Math.sin(this.angle) * this.speed; this.distanceTraveled = calculateDistance(this.sx, this.sy, this.x + vx, this.y + vy); if(this.distanceTraveled >= this.distanceToTarget) { createParticles(this.tx, this.ty); fireworks.splice(index, 1); } else { this.x += vx; this.y += vy; } }
+        Firework.prototype.draw = function() { ctx.beginPath(); ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]); ctx.lineTo(this.x, this.y); ctx.strokeStyle = 'hsl(' + hue + ', 100%, ' + this.brightness + '%)'; ctx.stroke(); }
+        
+        function Particle(x, y) { this.x = x; this.y = y; this.coordinates = []; this.coordinateCount = 5; while(this.coordinateCount--) { this.coordinates.push([this.x, this.y]); } this.angle = random(0, Math.PI * 2); this.speed = random(1, 10); this.friction = 0.95; this.gravity = 1; this.hue = random(hue - 50, hue + 50); this.brightness = random(50, 80); this.alpha = 1; this.decay = random(0.015, 0.03); }
+        Particle.prototype.update = function(index) { this.coordinates.pop(); this.coordinates.unshift([this.x, this.y]); this.speed *= this.friction; this.x += Math.cos(this.angle) * this.speed; this.y += Math.sin(this.angle) * this.speed + this.gravity; this.alpha -= this.decay; if(this.alpha <= this.decay) { particles.splice(index, 1); } }
+        Particle.prototype.draw = function() { ctx.beginPath(); ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]); ctx.lineTo(this.x, this.y); ctx.strokeStyle = 'hsla(' + this.hue + ', 100%, ' + this.brightness + '%, ' + this.alpha + ')'; ctx.stroke(); }
+        
+        function createParticles(x, y) { let particleCount = 100; while(particleCount--) { particles.push(new Particle(x, y)); } }
+        function loop() { if(!autoFireworks) { requestAnimFrame(loop); return; } requestAnimFrame(loop); hue += 0.5; ctx.globalCompositeOperation = 'destination-out'; ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; ctx.fillRect(0, 0, cw, ch); ctx.globalCompositeOperation = 'lighter'; let i = fireworks.length; while(i--) { fireworks[i].draw(); fireworks[i].update(i); } let k = particles.length; while(k--) { particles[k].draw(); particles[k].update(k); } if(timerTick >= timerTotal) { let startX = cw / 2 + random(-200, 200); fireworks.push(new Firework(startX, ch, random(0, cw), random(0, ch/2))); timerTick = 0; } else { timerTick++; } }
+        window.addEventListener('resize', function() { cw = window.innerWidth; ch = window.innerHeight; canvas.width = cw; canvas.height = ch; });
     </script>
 </body>
 </html>
