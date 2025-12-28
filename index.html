@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026 - Realistic</title>
+    <style>
+        /* --- CSS STYLES --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Rozha+One&family=Great+Vibes&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden; /* Scroll band */
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Container setup */
+        #container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10;
+            pointer-events: none; /* Click pass-through to canvas */
+        }
+
+        /* Canvas for Realistic Fireworks */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            cursor: crosshair;
+        }
+
+        /* Flash Effect */
+        #flash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Scene 1: Date Text */
+        .intro-text {
+            font-size: 3.5rem;
+            /* Golden Gradient Text */
+            background: linear-gradient(to bottom, #cfc09f 22%, #634f2c 24%, #cfc09f 26%, #cfc09f 27%, #ffecb3 40%, #3a2c0f 78%); 
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1.5s ease-out;
+            text-align: center;
+            z-index: 30;
+        }
+
+        /* Scene 2: Main Greeting */
+        .main-content {
+            display: none; 
+            text-align: center;
+            z-index: 15;
+            position: relative;
+            /* Text Shadow for readability over fireworks */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .hindi-text {
+            font-family: 'Rozha One', serif;
+            font-size: 3.5rem;
+            /* Glowing Orange/Gold */
+            background: linear-gradient(45deg, #ff0000, #ff8c00, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 69, 0, 0.8));
+            animation: textPulse 2s infinite alternate;
+            margin-bottom: 10px;
+        }
+
+        .sub-text {
+            font-family: 'Great Vibes', cursive;
+            color: #fff;
+            font-size: 2.5rem;
+            margin-top: 5px;
+            text-shadow: 0 0 10px #ff00de;
+        }
+
+        /* Center Divine Image */
+        .center-visual {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            /* Spiritual glow background */
+            background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, rgba(0,0,0,0) 70%);
+            box-shadow: 0 0 60px #ff4500;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px auto;
+            animation: rotateGlow 12s linear infinite;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+        
+        .center-visual img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid gold;
+        }
+
+        /* Animations */
+        @keyframes textPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px gold); }
+            100% { transform: scale(1.05); filter: drop-shadow(0 0 25px orangered); }
+        }
+
+        @keyframes rotateGlow {
+            0% { box-shadow: 0 0 40px #ff4500; transform: rotate(0deg); }
+            50% { box-shadow: 0 0 80px #ffd700; }
+            100% { box-shadow: 0 0 40px #ff4500; transform: rotate(360deg); }
+        }
+
+        @keyframes flashAnim {
+            0% { opacity: 0; }
+            30% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .intro-text { font-size: 2.2rem; }
+            .hindi-text { font-size: 2.2rem; }
+            .center-visual { width: 160px; height: 160px; }
+            .center-visual img { width: 140px; height: 140px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="flash-overlay"></div>
+    <canvas id="canvas"></canvas>
+
+    <div id="container">
+        <h1 class="intro-text" id="introText">01 January 2026 <br><span style="font-size: 1.5rem;">❤️🥳</span></h1>
+
+        <div class="main-content" id="mainContent">
+            <div class="center-visual">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Om_symbol.svg/1200px-Om_symbol.svg.png" alt="Divine">
+            </div>
+            <h1 class="hindi-text">नव वर्ष की <br> हार्दिक शुभकामनाएं..!!</h1>
+            <div class="sub-text">Jai Shri Ram | Hare Krishna</div>
+        </div>
+    </div>
+
+    <script>
+        // --- SEQUENCE CONTROLLER ---
+        window.onload = function() {
+            const introText = document.getElementById('introText');
+            const flash = document.getElementById('flash-overlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            // 1. Show Date
+            setTimeout(() => {
+                introText.style.opacity = '1';
+                introText.style.transform = 'scale(1)';
+            }, 500);
+
+            // 2. Flash & Switch
+            setTimeout(() => {
+                flash.style.animation = "flashAnim 1.5s ease-out"; // Flash starts
+                
+                setTimeout(() => {
+                    introText.style.display = 'none'; // Hide date inside flash
+                    mainContent.style.display = 'block'; // Prepare main content
+                    
+                    // Start heavy fireworks loop
+                    autoFireworks = true; 
+                    loop(); 
+                }, 500);
+
+            }, 3500); // 3.5 seconds hold
+        };
+
+
+        // --- REALISTIC FIREWORKS ENGINE ---
+        // Based on physics (Velocity, Acceleration, Friction)
+        
+        window.requestAnimFrame = (function(){
+            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback){ window.setTimeout(callback, 1000 / 60); };
+        })();
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let cw = window.innerWidth;
+        let ch = window.innerHeight;
+        let fireworks = [];
+        let particles = [];
+        let hue = 120;
+        let limiterTotal = 5;
+        let limiterTick = 0;
+        let timerTotal = 20; // Controls speed of automatic launches (lower = faster)
+        let timerTick = 0;
+        let autoFireworks = false; // Starts only after intro
+
+        canvas.width = cw;
+        canvas.height = ch;
+
+        // Sound Effects (Simple oscillator beeps - browser safe)
+        // Note: Real audio files are better, but this works without files
+        function playSound() {
+            // Optional: Add logic here if you have explosion.mp3
+        }
+
+        function random(min, max) { return Math.random() * (max - min) + min; }
+
+        // Calculate distance
+        function calculateDistance(p1x, p1y, p2x, p2y) {
+            let xDistance = p1x - p2x;
+            let yDistance = p1y - p2y;
+            return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+        }
+
+        // --- FIREWORK (ROCKET) CLASS ---
+        function Firework(sx, sy, tx, ty) {
+            this.x = sx;
+            this.y = sy;
+            this.sx = sx;
+            this.sy = sy;
+            this.tx = tx;
+            this.ty = ty;
+            this.distanceToTarget = calculateDistance(sx, sy, tx, ty);
+            this.distanceTraveled = 0;
+            this.coordinates = [];
+            this.coordinateCount = 3;
+            while(this.coordinateCount--) {
+                this.coordinates.push([this.x, this.y]);
+            }
+            this.angle = Math.atan2(ty - sy, tx - sx);
+            this.speed = 2;
+            this.acceleration = 1.05; // Rocket speeds up
+            this.brightness = random(50, 70);
+            this.targetRadius = 1;
+        }
+
+        Firework.prototype.update = function(index) {
+            this.coordinates.pop();
+            this.coordinates.unshift([this.x, this.y]);
+
+            if(this.targetRadius < 8) { this.targetRadius += 0.3; } 
+            else { this.targetRadius = 1; }
+
+            this.speed *= this.acceleration;
+            let vx = Math.cos(this.angle) * this.speed;
+            let vy = Math.sin(this.angle) * this.speed;
+            
+            this.distanceTraveled = calculateDistance(this.sx, this.sy, this.x + vx, this.y + vy);
+
+            if(this.distanceTraveled >= this.distanceToTarget) {
+                createParticles(this.tx, this.ty);
+                fireworks.splice(index, 1);
+            } else {
+                this.x += vx;
+                this.y += vy;
+            }
+        }
+
+        Firework.prototype.draw = function() {
+            ctx.beginPath();
+            ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+            ctx.lineTo(this.x, this.y);
+            ctx.strokeStyle = 'hsl(' + hue + ', 100%, ' + this.brightness + '%)';
+            ctx.stroke();
+        }
+
+        // --- PARTICLE (EXPLOSION) CLASS ---
+        function Particle(x, y) {
+            this.x = x;
+            this.y = y;
+            this.coordinates = [];
+            this.coordinateCount = 5; // Long trails
+            while(this.coordinateCount--) {
+                this.coordinates.push([this.x, this.y]);
+            }
+            this.angle = random(0, Math.PI * 2);
+            this.speed = random(1, 10);
+            this.friction = 0.95; // Slow down over time (Air resistance)
+            this.gravity = 1;     // Fall down
+            this.hue = random(hue - 50, hue + 50);
+            this.brightness = random(50, 80);
+            this.alpha = 1;
+            this.decay = random(0.015, 0.03); // How fast it fades
+        }
+
+        Particle.prototype.update = function(index) {
+            this.coordinates.pop();
+            this.coordinates.unshift([this.x, this.y]);
+            this.speed *= this.friction;
+            this.x += Math.cos(this.angle) * this.speed;
+            this.y += Math.sin(this.angle) * this.speed + this.gravity;
+            this.alpha -= this.decay;
+
+            if(this.alpha <= this.decay) {
+                particles.splice(index, 1);
+            }
+        }
+
+        Particle.prototype.draw = function() {
+            ctx.beginPath();
+            ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+            ctx.lineTo(this.x, this.y);
+            ctx.strokeStyle = 'hsla(' + this.hue + ', 100%, ' + this.brightness + '%, ' + this.alpha + ')';
+            ctx.stroke();
+        }
+
+        function createParticles(x, y) {
+            let particleCount = 80; // More particles for bigger explosion
+            while(particleCount--) {
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        // --- MAIN LOOP ---
+        function loop() {
+            if(!autoFireworks) {
+                 requestAnimFrame(loop);
+                 return;
+            }
+
+            requestAnimFrame(loop);
+            hue += 0.5;
+
+            // Create trails effect (Motion Blur)
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Adjust 0.5 for trail length
+            ctx.fillRect(0, 0, cw, ch);
+            ctx.globalCompositeOperation = 'lighter';
+
+            // Loop Fireworks
+            let i = fireworks.length;
+            while(i--) {
+                fireworks[i].draw();
+                fireworks[i].update(i);
+            }
+
+            // Loop Particles
+            let k = particles.length;
+            while(k--) {
+                particles[k].draw();
+                particles[k].update(k);
+            }
+
+            // Launch automatic fireworks
+            if(timerTick >= timerTotal) {
+                // Launch from bottom center-ish to random top spot
+                let startX = cw / 2 + random(-200, 200); 
+                let targetX = random(0, cw);
+                let targetY = random(0, ch / 2); // Top half only
+                
+                fireworks.push(new Firework(startX, ch, targetX, targetY));
+                
+                // Occasional double launch
+                if(random(0,10) > 7) {
+                     fireworks.push(new Firework(startX + 50, ch, random(0, cw), random(0, ch/2)));
+                }
+
+                timerTick = 0;
+            } else {
+                timerTick++;
+            }
+        }
+        
+        // Window Resize Handle
+        window.addEventListener('resize', function() {
+            cw = window.innerWidth;
+            ch = window.innerHeight;
+            canvas.width = cw;
+            canvas.height = ch;
+        });
+
+    </script>
+</body>
+  </html>
+  
